@@ -50,6 +50,24 @@ export const EmulatorJS: React.FunctionComponent<Props> = (props) => {
     width,
     height,
   }).innerHTML
+  
+  const handleKeyDown = (e: KeyboardEvent) => {
+    window.parent.postMessage({ type: "keydown", key: e.key }, "*");
+};
+
+  const handleKeyUp = (e: KeyboardEvent) => {
+    window.parent.postMessage({ type: "keyup", key: e.key }, "*");
+};
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+        window.removeEventListener("keyup", handleKeyUp);
+    };
+}, []);
 
   return (
     <iframe
